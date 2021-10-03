@@ -43,18 +43,22 @@ function App() {
     
     // Only runs if geolocation isn't default
     if (isApiKeyExist && coordinates.lat !== 0) {
-      axios.get(`${baseURL}lat=${coordinates.lat}&lon=${coordinates.long}&lang=${language}&appid=${apiKey}`).then((response) => {
-        console.log(response.data)
-        setWeather([response.data]);
-      }).catch(error => {
-        console.log(error)
-        // getApiKey()
-      })  
+      fetchWeather();
     }
     console.log(`${baseURL}lat=${coordinates.lat}&lon=${coordinates.long}&appid${apiKey}`);
     
-  },[coordinates.lat, coordinates.long]);
+  },[coordinates.lat]);
 
+  // API Fetch
+  const fetchWeather = () => {
+    axios.get(`${baseURL}lat=${coordinates.lat}&lon=${coordinates.long}&lang=${language}&appid=${apiKey}`).then((response) => {
+      console.log(response.data)
+      setWeather([response.data]);
+    }).catch(error => {
+      console.log(error)
+      // getApiKey()
+    })
+  }
 
   // Geolocation
   const geolocation = () => {
@@ -94,24 +98,21 @@ function App() {
       console.log(data);
       console.log(data.coord);
       setCoordinates({lat: data.coord.lat, long: data.coord.lon})
-      // setWeather([response.data]);
     }).catch(error => {
       console.log(error)
     })
   }
-
  
   return (
-    <div className="App">
-      <h1>Weather App</h1>
-      {/* <p>{apiKey}</p> */}
-      {/* <p>Coordinates: Latitude {coordinates.lat}, Longitude: {coordinates.long}</p> */}
-      {/* <p>{weather.map(forecast => {console.log(forecast)})}</p> */}
-      { !isApiKeyExist && getApiKey() }
-      
-      <Search onSearch={searchByName} />
-      <Output data={weather} />
+    <>
+    { !isApiKeyExist && getApiKey() }
+    <div className="d-flex flex-column justify-content-center align-items-center wrap-custom">
+      <div className="card col-sm-12 col-md-8 col-lg-6 text-center text-dark bg-light">
+        <Search onSearch={searchByName} />
+        <Output data={weather} />
+      </div>
     </div>
+    </>
   );
 }
 

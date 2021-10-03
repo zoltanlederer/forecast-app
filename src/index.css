@@ -11,3 +11,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.wrap-custom {
+  height: 100vh;
+}
+
+.search-input {
+  text-align: center;
+  font-size: 1.1rem;
+  border: 1px solid #ced4da;
+  border-radius: 1rem;
+}
+
+.update-time-text {
+  font-size: .8rem;
+}
+
+.feel-like {
+  font-size: .9rem;
+  font-weight: bold;
+}
+
+.temperature {
+  font-size: 3rem;
+  font-weight: bold;
+}

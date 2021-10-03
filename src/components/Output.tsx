@@ -16,14 +16,28 @@ const Output = ({data}: IData) => {
         return (
             data.map((forecast: any) => {
             return (
-              <>
-              <h1>Varos: {forecast.name} </h1>
-              <p>Lekerdezve: {dateTime}</p>
-              <img src={require(`../images/${forecast.weather[0].icon}.svg`).default} alt="" width="100px" />
-              <p>Idojaras: {forecast.weather[0].description}</p>
-              <p>Homerseklet: {forecast.main.temp}</p>
-              <p>Hoerzet: {forecast.main.feels_like}</p>
-              </>
+                <>
+                <div className="card-body">
+                    <h1 className="card-title fw-bold">{forecast.name}</h1>
+                    <p className="update-time-text">Frissitve:<br />{dateTime}</p>
+
+                    <ul className="d-flex justify-content-center list-unstyled">
+                        <li className="align-self-center">
+                            <img src={require(`../images/temp.png`).default} alt="" width="100px" />
+                        </li>
+                        <li>
+                            <p><img src={require(`../images/${forecast.weather[0].icon}.svg`).default} alt="" width="100px" /></p>
+                            <p>{forecast.weather[0].description}</p>
+                            <p className="feel-like">Hoerzet: {forecast.main.feels_like}&#8451;</p>
+                            <p className="temperature">{forecast.main.temp}&#8451;</p>
+                        </li>
+                    </ul>
+                    <button className="btn btn-outline-secondary">Frissites</button>
+                </div>
+                <div className="card-footer text-muted">
+                    Weather App
+                </div>
+                </>
             )
           })
         )
@@ -32,7 +46,6 @@ const Output = ({data}: IData) => {
 
     return (
         <div>
-            {/* <h2>Output:</h2> */}
             {renderWeather()}
         </div>
     )
