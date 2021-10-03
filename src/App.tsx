@@ -21,6 +21,9 @@ function App() {
   const [coordinates, setCoordinates] = useState<ICoord>({lat: 0, long: 0});
   // Store weather information after fetch
   const [weather, setWeather] = useState<any>([]);
+  const [isLocationAllowed, setIsLocationAllowed] = useState(true)
+  const [isApiKeyCorrect, setIsApiKeyCorrect] = useState(true)
+  const [searchError, setSearchError] = useState(false)
 
  
   // useEffect for API key request
@@ -56,7 +59,7 @@ function App() {
       setWeather([response.data]);
     }).catch(error => {
       console.log(error)
-      // getApiKey()
+      setIsApiKeyCorrect(false)
     })
   }
 
@@ -75,6 +78,8 @@ function App() {
   // Geolocation error
   function error(err: any) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
+    // prompt('Please Allow your location and Enter API Key');
+    setIsLocationAllowed(false);
   }
 
 
@@ -98,20 +103,26 @@ function App() {
       console.log(data);
       console.log(data.coord);
       setCoordinates({lat: data.coord.lat, long: data.coord.lon})
+      setSearchError(false)
     }).catch(error => {
       console.log(error)
+      setSearchError(true)
     })
   }
  
   return (
     <>
     { !isApiKeyExist && getApiKey() }
-    <div className="d-flex flex-column justify-content-center align-items-center wrap-custom">
-      <div className="card col-sm-12 col-md-8 col-lg-6 text-center text-dark bg-light">
-        <Search onSearch={searchByName} />
-        <Output data={weather} />
+    { !isLocationAllowed && <div className="alert alert-warning text-center" role="alert">Please allow access to your location</div>}
+    { !isApiKeyCorrect && <div className="alert alert-danger text-center" role="alert">Your API Key is incorrect</div>}
+    { isLocationAllowed && isApiKeyCorrect &&
+      <div className="d-flex flex-column justify-content-center align-items-center wrap-custom">
+        <div className="card col-sm-12 col-md-8 col-lg-6 text-center text-dark bg-light">
+          <Search onSearch={searchByName} />
+          <Output data={weather} searchError={searchError}/>
+        </div>
       </div>
-    </div>
+    }
     </>
   );
 }

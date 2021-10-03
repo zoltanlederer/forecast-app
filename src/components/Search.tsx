@@ -27,7 +27,7 @@ const Search = ({onSearch}: ISearch) => {
         <div className="card-header">
             <input
                 className="search-input" 
-                placeholder="Search"
+                placeholder="Kereses"
                 type="string" 
                 value={input} 
                 onChange={(e) => setInput(e.target.value)} 

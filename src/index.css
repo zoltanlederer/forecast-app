@@ -36,3 +36,7 @@ code {
   font-size: 3rem;
   font-weight: bold;
 }
+
+.weather-icon {
+  width: 100px;
+}
