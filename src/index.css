@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+.page-loading {
+  font-size: 3rem;
+}
+
 .wrap-custom {
   height: 100vh;
 }

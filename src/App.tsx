@@ -24,6 +24,7 @@ function App() {
   const [isLocationAllowed, setIsLocationAllowed] = useState(true)
   const [isApiKeyCorrect, setIsApiKeyCorrect] = useState(true)
   const [searchError, setSearchError] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
  
   // useEffect for API key request
@@ -53,9 +54,11 @@ function App() {
   },[coordinates.lat]);
 
   // API Fetch
-  const fetchWeather = () => {
-    axios.get(`${baseURL}lat=${coordinates.lat}&lon=${coordinates.long}&lang=${language}&appid=${apiKey}`).then((response) => {
+  const fetchWeather = async () => {
+    setIsLoading(true)
+    await axios.get(`${baseURL}lat=${coordinates.lat}&lon=${coordinates.long}&lang=${language}&appid=${apiKey}`).then((response) => {
       console.log(response.data)
+      setIsLoading(false)
       setWeather([response.data]);
     }).catch(error => {
       console.log(error)
@@ -97,11 +100,12 @@ function App() {
 
   // Search by location name
   const searchByName = async (locationName: string) => {
-    
+    setIsLoading(true)
     await axios.get(`${baseURL}q=${locationName}&appid=${apiKey}`).then((response) => {
       const data: any = response.data;
       console.log(data);
       console.log(data.coord);
+      setIsLoading(false)
       setCoordinates({lat: data.coord.lat, long: data.coord.lon})
       setSearchError(false)
     }).catch(error => {
@@ -115,9 +119,11 @@ function App() {
     { !isApiKeyExist && getApiKey() }
     { !isLocationAllowed && <div className="alert alert-warning text-center" role="alert">Please allow access to your location</div>}
     { !isApiKeyCorrect && <div className="alert alert-danger text-center" role="alert">Your API Key is incorrect</div>}
+    
     { isLocationAllowed && isApiKeyCorrect &&
       <div className="d-flex flex-column justify-content-center align-items-center wrap-custom">
         <div className="card col-sm-12 col-md-8 col-lg-6 text-center text-dark bg-light">
+          { isLoading && <div className="page-loading"><i className="fas fa-spinner fa-spin"></i></div>}
           <Search onSearch={searchByName} />
           <Output data={weather} searchError={searchError}/>
         </div>
