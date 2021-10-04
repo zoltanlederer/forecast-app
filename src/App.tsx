@@ -25,6 +25,7 @@ function App() {
   const [isApiKeyCorrect, setIsApiKeyCorrect] = useState(true)
   const [searchError, setSearchError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [refreshCouner, setRefreshCouner] = useState(0)
 
  
   // useEffect for API key request
@@ -51,7 +52,7 @@ function App() {
     }
     console.log(`${baseURL}lat=${coordinates.lat}&lon=${coordinates.long}&appid${apiKey}`);
     
-  },[coordinates.lat]);
+  },[coordinates.lat, refreshCouner]);
 
   // API Fetch
   const fetchWeather = async () => {
@@ -114,6 +115,16 @@ function App() {
     })
   }
  
+    // Automatic refresh
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setRefreshCouner(refreshCouner + 1);
+      }, 600000);
+      
+      return () => clearInterval(interval);
+    }, [refreshCouner]);
+
+    
 
   return (
     <>

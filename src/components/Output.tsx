@@ -35,12 +35,7 @@ const Output = ({data, searchError, update}: IData) => {
         update(locationName?.innerHTML);
     }
 
-    // Automatic refresh
-    setInterval(() => {
-        const locationName = document.querySelector('#location-name');
-        update(locationName?.innerHTML);
-    }, 600000)
-    
+
     const renderWeather = (): JSX.Element[] => {
         return (
             data.map((forecast: any) => {
