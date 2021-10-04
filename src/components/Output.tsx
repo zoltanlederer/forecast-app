@@ -28,11 +28,18 @@ const Output = ({data, searchError, update}: IData) => {
         }
     })
 
+    // Manual refresh
     const handleUpdate = (e: React.MouseEvent<Element, MouseEvent>) : void => {
         e.preventDefault();
         const locationName = document.querySelector('#location-name');
         update(locationName?.innerHTML);
     }
+
+    // Automatic refresh
+    setInterval(() => {
+        const locationName = document.querySelector('#location-name');
+        update(locationName?.innerHTML);
+    }, 600000)
     
     const renderWeather = (): JSX.Element[] => {
         return (
