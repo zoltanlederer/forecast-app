@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
+import { languages as language } from "../components/Languages";
 
 interface IData {
     data: any,
     searchError: boolean,
-    update: any;
+    update: any,
+    languageSwitch: string
 }
 
-const Output = ({data, searchError, update}: IData) => {
+const Output = ({data, searchError, update, languageSwitch}: IData) => {
 
     const [greeting, setGreeting] = useState('');
+    const [lang, setLang] = useState(languageSwitch);
+
+    // Switch language
+    useEffect(() => {
+        setLang(languageSwitch);
+    },[languageSwitch])
 
     // Date and Time
     const currentDate = new Date();
@@ -20,11 +28,11 @@ const Output = ({data, searchError, update}: IData) => {
     const hours = currentDate.getHours();
     useEffect(() => {
         if (hours >= 7 && hours < 12) {
-            setGreeting('Jo reggelt');
+            setGreeting(language[lang]['morning']);
         } else if (hours >= 12 && hours < 18) {
-            setGreeting('Jonapot');
+            setGreeting(language[lang]['afternoon']);
         } else {
-            setGreeting('Jo estet');
+            setGreeting(language[lang]['evening']);
         }
     })
 
@@ -35,17 +43,17 @@ const Output = ({data, searchError, update}: IData) => {
         update(locationName?.innerHTML);
     }
 
-
+    
     const renderWeather = (): JSX.Element[] => {
         return (
             data.map((forecast: any) => {
             return (
                 <>
                 <div className="card-body">
-                    { searchError && <div className="alert alert-danger" role="alert"><p className="m-0 p-0">City has not found. Try again.</p></div> }
-                    <div className="alert alert-info" role="alert"><h2 className="m-0 p-0">{greeting}</h2></div>
+                    { searchError && <div className="alert alert-danger" role="alert"><p className="m-0 p-0">{language[lang]['searchError']}</p></div> }
+                    <div className="alert alert-secondary" role="alert"><h2 className="m-0 p-0">{greeting}</h2></div>
                     <h1 className="card-title fw-bold" id="location-name">{forecast.name}</h1>
-                    <p className="update-time-text">Frissitve:<br />{dateTime}</p>
+                    <p className="update-time-text">{language[lang]['updated']}:<br />{dateTime}</p>
 
                     <ul className="d-flex justify-content-center list-unstyled">
                         <li className="align-self-center">
@@ -53,19 +61,19 @@ const Output = ({data, searchError, update}: IData) => {
                         </li>
                         <li>
                             <p><img className="weather-icon" src={require(`../images/${forecast.weather[0].icon}.png`).default} alt={forecast.weather[0].description} /></p>
-                            <p>{forecast.weather[0].description}</p>
-                            <p className="feel-like">Hoerzet: {Math.floor(forecast.main.feels_like)}&#8451;</p>
+                            <p className="text-capitalize">{forecast.weather[0].description}</p>
+                            <p className="feel-like">{language[lang]['feelsLike']}: {Math.floor(forecast.main.feels_like)}&#8451;</p>
                             <p className="temperature">{Math.floor(forecast.main.temp)}&#8451;</p>
                         </li>
                     </ul>
                     <button className="btn btn-outline-secondary"
                          type="submit" onClick={handleUpdate}
                     >
-                    Frissites
+                    {language[lang]['refresh']}
                     </button>
                 </div>
                 <div className="card-footer text-muted">
-                    Weather App
+                    {language[lang]['weatherApp']}
                 </div>
                 </>
             )
