@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 
 interface IData {
     data: any,
-    searchError: boolean
+    searchError: boolean,
+    update: any;
 }
 
-const Output = ({data, searchError}: IData) => {
+const Output = ({data, searchError, update}: IData) => {
 
     const [greeting, setGreeting] = useState('');
 
@@ -14,9 +15,9 @@ const Output = ({data, searchError}: IData) => {
     const date = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate();
     const time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
     const dateTime = date + ' ' + time;
+    
     // Greeting hours
     const hours = currentDate.getHours();
-
     useEffect(() => {
         if (hours >= 7 && hours < 12) {
             setGreeting('Jo reggelt');
@@ -27,6 +28,11 @@ const Output = ({data, searchError}: IData) => {
         }
     })
 
+    const handleUpdate = (e: React.MouseEvent<Element, MouseEvent>) : void => {
+        e.preventDefault();
+        const locationName = document.querySelector('#location-name');
+        update(locationName?.innerHTML);
+    }
     
     const renderWeather = (): JSX.Element[] => {
         return (
@@ -36,7 +42,7 @@ const Output = ({data, searchError}: IData) => {
                 <div className="card-body">
                     { searchError && <div className="alert alert-danger" role="alert"><p className="m-0 p-0">City has not found. Try again.</p></div> }
                     <div className="alert alert-info" role="alert"><h2 className="m-0 p-0">{greeting}</h2></div>
-                    <h1 className="card-title fw-bold">{forecast.name}</h1>
+                    <h1 className="card-title fw-bold" id="location-name">{forecast.name}</h1>
                     <p className="update-time-text">Frissitve:<br />{dateTime}</p>
 
                     <ul className="d-flex justify-content-center list-unstyled">
@@ -50,7 +56,11 @@ const Output = ({data, searchError}: IData) => {
                             <p className="temperature">{Math.floor(forecast.main.temp)}&#8451;</p>
                         </li>
                     </ul>
-                    <button className="btn btn-outline-secondary">Frissites</button>
+                    <button className="btn btn-outline-secondary"
+                         type="submit" onClick={handleUpdate}
+                    >
+                    Frissites
+                    </button>
                 </div>
                 <div className="card-footer text-muted">
                     Weather App

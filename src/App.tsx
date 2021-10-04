@@ -125,7 +125,7 @@ function App() {
         <div className="card col-sm-12 col-md-8 col-lg-6 text-center text-dark bg-light">
           { isLoading && <div className="page-loading"><i className="fas fa-spinner fa-spin"></i></div>}
           <Search onSearch={searchByName} />
-          <Output data={weather} searchError={searchError}/>
+          <Output data={weather} searchError={searchError} update={searchByName}/>
         </div>
       </div>
     }
