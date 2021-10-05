@@ -1,5 +1,7 @@
 # Forecast App
 
+## [Demo oldal](https://forecast-zoltan.netlify.app)
+Teszteléshez a kulcs: 1797475b23c89795b6c891c69a22224f
 
 ### Funkcionalitás
 
