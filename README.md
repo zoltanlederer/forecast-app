@@ -21,3 +21,11 @@
     - 07:00 – 12:00
     - 12:00 – 18:00
     - 18:00 – 07:00
+
+- Többnyelvűség (kapcsolóval választható)
+    - Angol
+    - Magyar
+- Sötét/világos mód (kapcsolóval választható)
+- Frissítés gomb, amivel újra lekérdezhetjük az adott város időjárási
+adatait.
+- Automatikus frissítés 10 percenként.
