@@ -16,7 +16,7 @@ interface ICoord {
 function App() {
 
   // API
-  const baseURL = 'http://api.openweathermap.org/data/2.5/weather?units=metric&';  
+  const baseURL = 'https://api.openweathermap.org/data/2.5/weather?units=metric&';  
 
   const [apiKey, setapiKey] = useState('');
   const [isApiKeyExist, setApiKeyExist] = useState(false);
