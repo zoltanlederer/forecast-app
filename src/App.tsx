@@ -4,6 +4,7 @@ import './App.css';
 import Search from './components/Search';
 import Output from './components/Output';
 import { languages as language } from "./components/Languages";
+import { colortheme } from "./components/Colortheme";
 
 
 interface ICoord {
@@ -22,21 +23,23 @@ function App() {
   const [coordinates, setCoordinates] = useState<ICoord>({lat: 0, long: 0});
   // Store weather information after fetch
   const [weather, setWeather] = useState<any>([]);
-  const [isLocationAllowed, setIsLocationAllowed] = useState(true)
-  const [isApiKeyCorrect, setIsApiKeyCorrect] = useState(true)
-  const [searchError, setSearchError] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLocationAllowed, setIsLocationAllowed] = useState(true);
+  const [isApiKeyCorrect, setIsApiKeyCorrect] = useState(true);
+  const [searchError, setSearchError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   // Automatic refresh
-  const [refreshCouner, setRefreshCouner] = useState(0)
+  const [refreshCouner, setRefreshCouner] = useState(0);
   // Switch language
   const [lang, setlang] = useState('hu');
+  // Light/Dark mode
+  const [darkTheme, setDarkTheme] = useState('light');
  
   // useEffect for API key request
   useEffect(() => {
     if (apiKey === '') {
-      setApiKeyExist(false)
+      setApiKeyExist(false);
     } else {
-      setApiKeyExist(true)
+      setApiKeyExist(true);
     }
   }, [apiKey, isApiKeyExist])
 
@@ -47,21 +50,21 @@ function App() {
       geolocation();  
     }
     
-    // Only runs if geolocation isn't default
-    if (isApiKeyExist && coordinates.lat !== 0) {
-      fetchWeather();
-    }
+  // Only runs if geolocation isn't default
+  if (isApiKeyExist && coordinates.lat !== 0) {
+    fetchWeather();
+  }
     
   },[coordinates.lat, refreshCouner, lang]);
 
   // API Fetch
   const fetchWeather = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     await axios.get(`${baseURL}lat=${coordinates.lat}&lon=${coordinates.long}&lang=${lang}&appid=${apiKey}`).then((response) => {
-      setIsLoading(false)
+      setIsLoading(false);
       setWeather([response.data]);
     }).catch(error => {
-      setIsApiKeyCorrect(false)
+      setIsApiKeyCorrect(false);
     })
   }
 
@@ -73,7 +76,7 @@ function App() {
   // Geolocation success
   function success(position: any) {
     const crd = position.coords;
-    setCoordinates({lat: crd.latitude, long: crd.longitude})
+    setCoordinates({lat: crd.latitude, long: crd.longitude});
   }
 
   // Geolocation error
@@ -93,14 +96,14 @@ function App() {
 
   // Search by location name
   const searchByName = async (locationName: string) => {
-    setIsLoading(true)
+    setIsLoading(true);
     await axios.get(`${baseURL}q=${locationName}&appid=${apiKey}`).then((response) => {
       const data: any = response.data;
-      setIsLoading(false)
-      setCoordinates({lat: data.coord.lat, long: data.coord.lon})
-      setSearchError(false)
+      setIsLoading(false);
+      setCoordinates({lat: data.coord.lat, long: data.coord.lon});
+      setSearchError(false);
     }).catch(error => {
-      setSearchError(true)
+      setSearchError(true);
     })
   }
  
@@ -114,7 +117,6 @@ function App() {
   }, [refreshCouner]);
 
     
-
   return (
     <>
     { !isApiKeyExist && getApiKey() }
@@ -122,10 +124,10 @@ function App() {
     { !isApiKeyCorrect && <div className="alert alert-danger text-center" role="alert">{language[lang]['apiError']}</div>}    
     { isLocationAllowed && isApiKeyCorrect &&
       <div className="d-flex flex-column justify-content-center align-items-center wrap-custom">
-        <div className="card col-sm-12 col-md-8 col-lg-6 text-center text-dark bg-light">
+        <div className={`card col-sm-12 col-md-8 col-lg-6 text-center ${colortheme[darkTheme]['card']}`}>
           { isLoading && <div className="page-loading"><i className="fas fa-spinner fa-spin"></i></div> }
-            <Search onSearch={searchByName} languageSwitch={setlang}/>
-            <Output data={weather} searchError={searchError} update={searchByName} languageSwitch={lang}/>
+            <Search onSearch={searchByName} languageSwitch={setlang} themeColor={setDarkTheme} />
+            <Output data={weather} searchError={searchError} update={searchByName} languageSwitch={lang} themeColor={darkTheme}/>
         </div>
       </div>
     }

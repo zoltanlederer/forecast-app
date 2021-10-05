@@ -1,22 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { languages as language } from "../components/Languages";
+import { colortheme } from "../components/Colortheme";
 
 interface IData {
     data: any,
     searchError: boolean,
     update: any,
-    languageSwitch: string
+    languageSwitch: any,
+    themeColor: any,
 }
 
-const Output = ({data, searchError, update, languageSwitch}: IData) => {
+const Output = ({data, searchError, update, languageSwitch, themeColor}: IData) => {
 
     const [greeting, setGreeting] = useState('');
     const [lang, setLang] = useState(languageSwitch);
+    const [darkTheme, setDarkTheme] = useState('light');
 
     // Switch language
     useEffect(() => {
         setLang(languageSwitch);
     },[languageSwitch])
+
+    // Light/Dark mode
+    useEffect(() => {
+        setDarkTheme(themeColor);
+    },[themeColor])
 
     // Date and Time
     const currentDate = new Date();
@@ -66,13 +74,13 @@ const Output = ({data, searchError, update, languageSwitch}: IData) => {
                             <p className="temperature">{Math.floor(forecast.main.temp)}&#8451;</p>
                         </li>
                     </ul>
-                    <button className="btn btn-outline-secondary"
+                    <button className={`btn ${colortheme[darkTheme]['updateBtn']}`}
                          type="submit" onClick={handleUpdate}
                     >
                     {language[lang]['refresh']}
                     </button>
                 </div>
-                <div className="card-footer text-muted">
+                <div className={`card-footer ${colortheme[darkTheme]['cardFooter']}`}>
                     {language[lang]['weatherApp']}
                 </div>
                 </>
