@@ -5,7 +5,7 @@ import { colortheme } from "../components/Colortheme";
 interface IData {
     data: any,
     searchError: boolean,
-    update: any,
+    update: (locationName: string | undefined) => {},
     languageSwitch: any,
     themeColor: any,
 }
@@ -42,7 +42,7 @@ const Output = ({data, searchError, update, languageSwitch, themeColor}: IData) 
         } else {
             setGreeting(language[lang]['evening']);
         }
-    })
+    },)
 
     // Manual refresh
     const handleUpdate = (e: React.MouseEvent<Element, MouseEvent>) : void => {

@@ -95,7 +95,7 @@ function App() {
   }
 
   // Search by location name
-  const searchByName = async (locationName: string) => {
+  const searchByName = async (locationName: string | undefined) => {
     setIsLoading(true);
     await axios.get(`${baseURL}q=${locationName}&appid=${apiKey}`).then((response) => {
       const data: any = response.data;

@@ -3,7 +3,7 @@ import { languages as language } from "../components/Languages";
 import { colortheme } from "../components/Colortheme";
 
 interface ISearch {
-    onSearch: any,
+    onSearch: (locationName: string | undefined) => {},
     languageSwitch: any,
     themeColor: any,
 }
