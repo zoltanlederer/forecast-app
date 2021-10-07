@@ -22,7 +22,7 @@ function App() {
   const [isApiKeyExist, setApiKeyExist] = useState(false);
   const [coordinates, setCoordinates] = useState<ICoord>({lat: 0, long: 0});
   // Store weather information after fetch
-  const [weather, setWeather] = useState<any>([]);
+  const [weather, setWeather] = useState([]);
   const [isLocationAllowed, setIsLocationAllowed] = useState(true);
   const [isApiKeyCorrect, setIsApiKeyCorrect] = useState(true);
   const [searchError, setSearchError] = useState(false);
@@ -95,7 +95,7 @@ function App() {
   }
 
   // Search by location name
-  const searchByName = async (locationName: string) => {
+  const searchByName = async (locationName: string | undefined) => {
     setIsLoading(true);
     await axios.get(`${baseURL}q=${locationName}&appid=${apiKey}`).then((response) => {
       const data: any = response.data;
